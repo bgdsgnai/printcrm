@@ -1373,6 +1373,20 @@
             if(res.ok) loadUsers();
             else alert('Ошибка. Возможно, такое имя уже существует.');
         }
+		// Логика сброса фильтров
+document.getElementById('reset-filters').addEventListener('click', () => {
+    document.querySelectorAll('.filter-item').forEach(el => el.value = '');
+    console.log('Фильтры сброшены');
+    // Здесь вызовите функцию обновления списка (например, renderHistory())
+});
+
+// Отслеживание изменений
+document.querySelectorAll('.filter-item').forEach(item => {
+    item.addEventListener('change', (e) => {
+        console.log(`Изменен фильтр: ${e.target.id}, значение: ${e.target.value}`);
+        // Тут логика фильтрации данных
+    });
+});
     </script>
 </body>
 </html>
