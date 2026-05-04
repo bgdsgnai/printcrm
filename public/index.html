@@ -13,6 +13,69 @@
             --primary: #a8c7fa; --text-main: #e3e3e3; --text-muted: #8e918f;
             --danger: #e26d6d; --success: #81c995; --warning: #fca311;
             --border: #333639; --brand-color: #F7A400; --input-bg: var(--bg-color);
+			/* Контейнер заголовка истории */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+/* Блок фильтров */
+.history-filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Стили элементов фильтрации */
+.filter-item {
+    background-color: var(--card-bg); /* Ваша переменная фона карточки */
+    color: var(--text-main); /* Ваша переменная цвета текста */
+    border: 1px solid var(--border); /* Ваша переменная границ */
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.filter-item:focus {
+    border-color: var(--brand-color); /* Оранжевый акцент[cite: 2] */
+}
+
+/* Кнопка сброса */
+.btn-reset-filters {
+    background: transparent;
+    border: 1px solid var(--danger); /* Красный цвет из ваших переменных[cite: 2] */
+    color: var(--danger);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.btn-reset-filters:hover {
+    background: var(--danger);
+    color: white;
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 1024px) {
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .history-filters {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .filter-item {
+        flex-grow: 1;
+    }
+}
         }
 
         body[data-theme="light"] {
