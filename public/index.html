@@ -866,38 +866,36 @@
         }
 
         function filterOrders() {
-            const query = document.getElementById('sidebarSearch').value.toLowerCase();
-            const activeGrid = document.getElementById('ordersGrid');
-            const historyGrid = document.getElementById('historyGrid');
-            
-            activeGrid.innerHTML = '';
-            historyGrid.innerHTML = '';
-            
-            allOrders.forEach(o => {
-                let searchString = `${o.order_number} ${o.product_type} ${o.client_name} ${o.assignee || ''} ${o.amount || ''}`.toLowerCase();
-                
-                try {
-                    let detailsObj = typeof o.details === 'string' ? JSON.parse(o.details) : (o.details || {});
-                    if (typeof detailsObj === 'string') detailsObj = JSON.parse(detailsObj);
-                    if(detailsObj.format) searchString += ` ${detailsObj.format.toLowerCase()}`;
-                    if(detailsObj.paper) searchString += ` ${detailsObj.paper}`;
-                    if(detailsObj.cover) searchString += ` ${detailsObj.cover.toLowerCase()}`;
-                    if(detailsObj.extra) searchString += ` ${detailsObj.extra.toLowerCase()}`;
-                } catch(e) {}
+    const query = document.getElementById('sidebarSearch').value.toLowerCase();
+    const activeGrid = document.getElementById('ordersGrid');
+    const historyGrid = document.getElementById('historyGrid');
+    
+    activeGrid.innerHTML = '';
+    historyGrid.innerHTML = '';
+    
+    allOrders.forEach(o => {
+        let searchString = `${o.order_number} ${o.product_type} ${o.client_name} ${o.assignee || ''} ${o.amount || ''}`.toLowerCase();
+        
+        try {
+            let detailsObj = typeof o.details === 'string' ? JSON.parse(o.details) : (o.details || {});
+            if (typeof detailsObj === 'string') detailsObj = JSON.parse(detailsObj);
+            if(detailsObj.format) searchString += ` ${detailsObj.format.toLowerCase()}`;
+            if(detailsObj.paper) searchString += ` ${detailsObj.paper}`;
+            if(detailsObj.cover) searchString += ` ${detailsObj.cover.toLowerCase()}`;
+            if(detailsObj.extra) searchString += ` ${detailsObj.extra.toLowerCase()}`;
+        } catch(e) {}
 
-                if(searchString.includes(query)) {
-                    if (o.status === 'Завершен') {
-                        renderOrderCard(o, 'historyGrid');
-                    } else {
-                        const isCreator = o.creator_name === currentUser.name;
-                        const isAssignee = o.assignee === currentUser.name;
-                        if (isSuperAdmin || isCreator || isAssignee) {
-                            renderOrderCard(o, 'ordersGrid');
-                        }
-                    }
-                }
-            });
+        if(searchString.includes(query)) {
+            if (o.status === 'Завершен') {
+                renderOrderCard(o, 'historyGrid');
+            } else {
+                // МЫ УБРАЛИ ПРОВЕРКУ РОЛИ И ДОСТУПА.
+                // Теперь любой заказ, прошедший через поиск, попадает в сетку.
+                renderOrderCard(o, 'ordersGrid');
+            }
         }
+    });
+}
 
         function switchSection(sectionId, btn) {
             if(btn) {
