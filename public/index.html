@@ -398,8 +398,39 @@
         </main>
 
         <main class="content-section" id="section-history">
-            <div class="page-header"><h2>История заказов</h2></div>
-            <div class="orders-grid" id="historyGrid"></div>
+            <div class="history-header">
+    <h2>История заказов</h2>
+    <div class="history-filters">
+        <select id="filter-category" class="filter-item">
+            <option value="">Категория</option>
+            <option value="books">Книги</option>
+            <option value="catalogs">Каталоги</option>
+            <option value="leaflets">Листовки</option>
+        </select>
+        <select id="filter-year" class="filter-item">
+            <option value="">Год</option>
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+        </select>
+        <select id="filter-month" class="filter-item">
+            <option value="">Месяц</option>
+            <option value="01">Январь</option>
+            <option value="02">Февраль</option>
+            <option value="03">Март</option>
+            <option value="04">Апрель</option>
+            <option value="05">Май</option>
+            <option value="06">Июнь</option>
+            <option value="07">Июль</option>
+            <option value="08">Август</option>
+            <option value="09">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+        <input type="date" id="filter-date" class="filter-item">
+        <button id="reset-filters" class="btn-reset-filters">Сбросить</button>
+    </div>
+</div>
         </main>
 
         <main class="content-section" id="section-employees">
