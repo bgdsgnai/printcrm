@@ -129,18 +129,32 @@ app.post('/api/login', async (req, res) => {
     } catch(err) { res.status(500).json({ error: 'Ошибка сервера' }); }
 });
 
-app.put('/api/profile', authenticateToken, async (req, res) => {
-    const { name, role, password, avatar } = req.body;
+app.put('/api/users/:id', authenticateToken, async (req, res) => {
+    // Проверка прав: только Булат может редактировать других через этот роут
+    if (req.user.name !== 'Булат') return res.status(403).json({ error: 'Нет прав' });
+    
+    const { name, role, password } = req.body;
     try {
-        let query = `UPDATE users SET name = $1, role = $2, avatar = $3 WHERE id = $4`;
-        let params = [name.trim(), role, avatar, req.user.id];
+        let query;
+        let params;
+
         if (password && password.trim() !== '') {
-            params = [name.trim(), role, avatar, await bcrypt.hash(password.trim(), 10), req.user.id];
-            query = `UPDATE users SET name = $1, role = $2, avatar = $3, password = $4 WHERE id = $5`;
+            // Если пароль введен — хешируем его
+            const hashedPassword = await bcrypt.hash(password.trim(), 10);
+            query = `UPDATE users SET name = $1, role = $2, password = $3 WHERE id = $4`;
+            params = [name.trim(), role, hashedPassword, req.params.id];
+        } else {
+            // Если поле пароля пустое — обновляем только имя и роль
+            query = `UPDATE users SET name = $1, role = $2 WHERE id = $3`;
+            params = [name.trim(), role, req.params.id];
         }
+
         await pool.query(query, params);
-        res.json({ success: true, token: jwt.sign({ id: req.user.id, name: name.trim(), role }, SECRET_KEY, { expiresIn: '24h' }), user: { name: name.trim(), role, avatar } });
-    } catch (err) { res.status(400).json({ error: 'Имя уже занято' }); }
+        res.json({ success: true });
+    } catch(err) { 
+        console.error('Ошибка при обновлении пользователя:', err);
+        res.status(500).json({ error: 'Ошибка сервера' }); 
+    }
 });
 
 // АДМИНКА ДЛЯ СОТРУДНИКОВ
